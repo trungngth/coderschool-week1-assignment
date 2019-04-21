@@ -5,6 +5,14 @@ import (
 	"fmt"
 )
 
+//URL stores both original and shorten url
+type URL struct {
+	originalURL string
+	shortenURL  string
+}
+
+var serialData map[string]string
+
 func main() {
 
 	add := flag.Bool("a", false, "Implement append to the list: `urlshorten configure -a dogs -u www.dogs.com`")
