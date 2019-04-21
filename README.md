@@ -18,7 +18,7 @@ The list of redirection should be maintained in a command line tool, what can:
 - [ ] Implement remove from the list: `urlshorten -d dogs`
 - [ ] List redirections: `urlshorten -l`
 - [ ] Run HTTP server on a given port: `urlshorten run -p 8080`
-- [ ] Prints usage info: `urlshorten -h`
+- [x] Prints usage info: `urlshorten -h`
 
 
 ## Bonus

@@ -21,5 +21,5 @@ func main() {
 		flag.PrintDefaults()
 	}
 
-	fmt.Println(add, url, rem, lis, port)
+	fmt.Println(*add, *url, *rem, *lis, *port)
 }
