@@ -10,12 +10,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-//URL stores both original and shorten url
-type URL struct {
-	originalURL string
-	shortenURL  string
-}
-
 type flagStorage struct {
 	addURL    *string
 	stringURL *string
