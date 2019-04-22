@@ -16,7 +16,7 @@ type URL struct {
 }
 
 type flagStorage struct {
-	addURL    *bool
+	addURL    *string
 	stringURL *string
 	removeURL *string
 	listURL   *bool
@@ -37,8 +37,22 @@ func main() {
 	if *fs.help {
 		flag.PrintDefaults()
 	}
+	//List the redirects list
 	if *fs.listURL {
 		printYAML()
+	}
+	//Add url to the list
+	if *fs.configure {
+		serialData[*fs.addURL] = *fs.stringURL
+		writeYAML()
+	}
+	//Remove url from the list
+	if *fs.removeURL != "" {
+		delete(serialData, *fs.removeURL)
+		writeYAML()
+	}
+	if *fs.run {
+
 	}
 
 	// if *port == 0 {
@@ -52,7 +66,7 @@ func initServer() {
 }
 
 func initFlag(fs *flagStorage) {
-	fs.addURL = flag.Bool("a", false, "Implement append to the list: `urlshorten configure -a dogs -u www.dogs.com`")
+	fs.addURL = flag.String("a", "", "Implement append to the list: `urlshorten configure -a dogs -u www.dogs.com`")
 	fs.stringURL = flag.String("u", "", "Implement append to the list: `urlshorten configure -a dogs -u www.dogs.com`")
 	fs.removeURL = flag.String("d", "", "Implement remove from the list: `urlshorten -d dogs`")
 	fs.listURL = flag.Bool("l", false, "List redirections: `urlshorten -l`")
@@ -71,6 +85,17 @@ func readYAML() {
 	}
 
 	err = yaml.Unmarshal(bytes, &serialData)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func writeYAML() {
+	bytes, err := yaml.Marshal(&serialData)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = ioutil.WriteFile("./config.yaml", bytes, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
