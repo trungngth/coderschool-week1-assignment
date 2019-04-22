@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/http"
 
 	"gopkg.in/yaml.v2"
 )
@@ -52,17 +53,19 @@ func main() {
 		writeYAML()
 	}
 	if *fs.run {
-
+		http.HandleFunc("/", initServer)
+		log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *fs.port), nil))
 	}
-
-	// if *port == 0 {
-	// 	http.HandleFunc("/", handler)
-	// }
 
 }
 
-func initServer() {
-
+func initServer(w http.ResponseWriter, r *http.Request) {
+	urlPath := r.URL.Path[1:]
+	urlMatch, match := serialData[urlPath]
+	if match {
+		http.Redirect(w, r, urlMatch, http.StatusMovedPermanently)
+	}
+	http.Error(w, "Not in the redirect list", http.StatusNotFound)
 }
 
 func initFlag(fs *flagStorage) {
